@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>recom.wick.pics</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d1117; color: #c9d1d9; font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace; font-size: 14px; padding: 20px; max-width: 1200px; margin: 0 auto; }
+  h1 { color: #f0883e; font-size: 18px; margin-bottom: 4px; }
+  .subtitle { color: #484f58; font-size: 12px; margin-bottom: 20px; }
+  .controls { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .controls button { background: #21262d; border: 1px solid #30363d; color: #c9d1d9; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 12px; }
+  .controls button:hover { background: #30363d; }
+  .controls button.active-filter { background: #9e6a03; border-color: #9e6a03; color: #fff; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; padding: 8px 10px; border-bottom: 2px solid #21262d; color: #f0883e; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 8px 10px; border-bottom: 1px solid #161b22; vertical-align: top; }
+  tr:hover td { background: #161b22; }
+  tr.tested-row td { opacity: 0.5; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; cursor: pointer; }
+  .badge-untested { background: #2a1f0e; color: #d29922; }
+  .badge-tested { background: #1a4b2e; color: #3fb950; }
+  .tool-col { width: 1px; white-space: nowrap; }
+  .tool-name { color: #e6edf3; font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .tool-url a { color: #58a6ff; text-decoration: none; font-size: 12px; word-break: break-all; white-space: normal; }
+  .tool-url a:hover { text-decoration: underline; }
+  .category { color: #8b949e; font-size: 12px; }
+  .notes { color: #8b949e; font-size: 12px; max-width: 750px; }
+  .notes .hl { color: #4aba60; font-weight: 600; }
+  .date { color: #484f58; font-size: 11px; }
+  .source { color: #484f58; font-size: 11px; }
+  .verdict { font-size: 12px; }
+  .badge-yes { background: #1a4b2e; color: #3fb950; }
+  .badge-no { background: #3d1f1f; color: #f85149; }
+  .badge-unknown { background: #21262d; color: #484f58; }
+  .badge-urgent { background: #4b1d1d; color: #ff6b6b; font-weight: 700; }
+  .value-cell { font-size: 13px; font-weight: 700; font-family: inherit; text-align: center; cursor: pointer; }
+  .actions button { background: none; border: none; color: #484f58; cursor: pointer; padding: 2px 6px; font-size: 12px; font-family: inherit; }
+  .actions button:hover { color: #c9d1d9; }
+  .add-form { display: none; background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 16px; margin-bottom: 16px; }
+  .add-form.show { display: block; }
+  .add-form input, .add-form textarea, .add-form select { width: 100%; background: #0d1117; border: 1px solid #30363d; color: #c9d1d9; padding: 8px; border-radius: 4px; font-family: inherit; font-size: 13px; margin-bottom: 8px; }
+  .add-form textarea { height: 50px; resize: vertical; }
+  .add-form .row { display: flex; gap: 8px; }
+  .add-form .row > * { flex: 1; }
+  .add-form button.submit { background: #9e6a03; border: none; color: #fff; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 13px; }
+  .add-form button.submit:hover { background: #bb8009; }
+  .stats { color: #484f58; font-size: 12px; margin-bottom: 12px; }
+  .edit-inline { background: #0d1117; border: 1px solid #30363d; color: #c9d1d9; padding: 4px 6px; font-family: inherit; font-size: 12px; width: 100%; border-radius: 3px; }
+  .export-bar { display: flex; gap: 8px; margin-top: 8px; }
+  .export-bar button { background: #161b22; border: 1px solid #30363d; color: #8b949e; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-family: inherit; font-size: 11px; }
+  .export-bar button:hover { color: #c9d1d9; border-color: #484f58; }
+</style>
+</head>
+<body>
+
+<h1>recom.wick.pics</h1>
+<div class="subtitle">AI tool recommendations — things to test when I get time</div>
+
+<div class="stats" id="stats"></div>
+
+<div class="controls">
+  <button onclick="toggleAdd()" id="addBtn">+ Add Recommendation</button>
+  <button onclick="setFilter('all')" id="f-all" class="active-filter">All</button>
+  <button onclick="setFilter('untested')" id="f-untested">Untested</button>
+  <button onclick="setFilter('tested')" id="f-tested">Tested</button>
+</div>
+
+<div class="add-form" id="addForm">
+  <input type="text" id="newName" placeholder="Tool name...">
+  <input type="text" id="newUrl" placeholder="URL (optional)...">
+  <div class="row">
+    <input type="text" id="newCategory" placeholder="Category (e.g. coding, design, research)...">
+    <input type="text" id="newSource" placeholder="Recommended by...">
+  </div>
+  <textarea id="newNotes" placeholder="Notes (what it does, why check it out)..."></textarea>
+  <button class="submit" onclick="addItem()">Add</button>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:25px"></th>
+      <th style="width:45px">Value</th>
+      <th class="tool-col">Tool</th>
+      <th>Category</th>
+      <th style="width:60px">Free</th>
+      <th style="width:60px">Private</th>
+      <th style="width:70px">Tested</th>
+      <th>Notes</th>
+      <th style="width:60px">Verdict</th>
+    </tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+</table>
+
+<div class="export-bar">
+  <button onclick="exportJSON()">Export JSON</button>
+  <button onclick="importJSON()">Import JSON</button>
+  <button onclick="resetToSeed()">Reset to defaults</button>
+</div>
+<input type="file" id="importFile" accept=".json" style="display:none" onchange="handleImport(event)">
+
+<script>
+const STORAGE_KEY = 'recom_items';
+
+const SEED_DATA = [{"id":1,"name":"Arena Social","url":"https://arena.social","category":"social/trading","source":"Green (existing accounts)","notes":"Bot-friendly social platform. Has bot trading \u2014 assess if any bots are profitable. Use as advertising platform for wick.pics. Two accounts: personal + wick bot.","tested":true,"verdict":"next","added":"2026-03-28","free":true,"private":false,"value":6},{"id":2,"name":"Kiro","url":"https://kiro.dev","category":"IDE/coding","source":"tab backlog","notes":"AWS agentic AI IDE. Spec-driven development \u2014 converts natural language into specs, tasks, and code. VS Code fork with native MCP integration. Pro $20/mo. Also ships a Kiro CLI.","tested":false,"verdict":"backlog","added":"2026-03-28","free":true,"private":false,"value":3},{"id":3,"name":"Kling AI","url":"https://klingai.com","category":"video/creative","source":"tab backlog","notes":"AI video/movie creator. Generate videos from text prompts or images.","tested":false,"verdict":"skip","added":"2026-03-28","free":"part","private":false,"value":3},{"id":4,"name":"DexScreener CLI MCP","url":"https://github.com/vibeforge1111/dexscreener-cli-mcp-tool","category":"crypto/tooling","source":"tab backlog","notes":"GitHub repo \u2014 CLI + MCP server for DexScreener data. Direct integration with Claude Code for live crypto pair/token lookups during research.","tested":false,"verdict":"next","added":"2026-03-28","free":true,"private":true,"value":8},{"id":5,"name":"Public APIs","url":"https://github.com/public-apis/public-apis","category":"data/APIs","source":"tab backlog","notes":"Curated GitHub list of hundreds of free public APIs across finance, crypto, weather, government data. Good source for building data-driven features.","tested":false,"verdict":"backlog","added":"2026-03-28","free":true,"private":null,"value":7},{"id":6,"name":"Inception Labs","url":"https://www.inceptionlabs.ai","category":"AI/LLM","source":"tab backlog","notes":"Diffusion-based LLMs \u2014 10x faster, 1/10th cost vs traditional. Mercury 2 is current flagship (reasoning LLM), Mercury Edit 2 for coding. OpenAI-compatible API. Founded by Stanford/UCLA/Cornell profs who co-invented diffusion.","tested":false,"verdict":"backlog","added":"2026-03-28","free":"part","private":false,"value":3},{"id":7,"name":"Pollinations.ai","url":"https://pollinations.ai/","category":"AI Images/Audio/Text","source":"tab backlog","notes":"Free, open-source AI media generation API. Text-to-image, text-to-audio, LLM chat. {{No auth needed}}, React hooks available. Could integrate into products.","tested":false,"verdict":"next","added":"2026-03-28","free":true,"private":false,"value":7},{"id":8,"name":"Skyvern","url":"https://www.skyvern.com/","category":"Browser Automation","source":"tab backlog","notes":"AI-powered browser automation \u2014 uses LLMs + computer vision to navigate websites. Alternative to Selenium/Playwright that handles dynamic UI. Open-source, self-hostable.","tested":false,"verdict":"next","added":"2026-03-28","free":true,"private":true,"value":8},{"id":9,"name":"Context7","url":"https://context7.com/","category":"Dev Tools / MCP","source":"tab backlog","notes":"MCP server that feeds real-time library docs into AI coding tools. {{Stops AI from writing code that looks right but calls functions that dont exist}}. Free, open-source, works with Claude Code.","tested":true,"verdict":"urgent","added":"2026-03-28","free":true,"private":true,"value":9},{"id":10,"name":"Zo Computer","url":"https://www.zo.computer/","category":"AI Agent Platform","source":"tab backlog","notes":"Personal cloud computer powered by AI \u2014 ask it to build projects, run automations, send text updates. Unified interface with built-in storage, hosting, and AI tools. Compare capabilities vs OpenClaw.","tested":false,"verdict":"backlog","added":"2026-03-28","free":"part","private":null,"value":4},{"id":11,"name":"RuFlow","url":"https://ruflow.com/","category":"AI Workflow Automation","source":"tab backlog","notes":"Visual AI workflow builder \u2014 chain LLM calls, APIs, and logic into automated pipelines. Drag-and-drop, similar to n8n but AI-native. Site currently redirects to /lander \u2014 verify product status before investing time.","tested":false,"verdict":"backlog","free":"part","private":false,"added":"2026-03-28","value":5},{"id":12,"name":"Google Colab","url":"https://colab.research.google.com/","category":"Cloud Notebooks / GPU","source":"tab backlog","notes":"Free Jupyter notebooks with GPU/TPU access. Run Python, ML training, data analysis. {{Free T4 GPU}} on free tier. Useful for experiments that need more compute than local box.","tested":false,"verdict":"backlog","free":true,"private":false,"added":"2026-03-28","value":7},{"id":13,"name":"Furucombo","url":"https://furucombo.app/","category":"DeFi / Transaction Builder","source":"telegram","notes":"DeFi combo builder \u2014 chain multiple DeFi actions (flash loans, swaps, lending, borrowing) into single transactions. Drag-and-drop interface. Supports multi-chain. Relevant for complex arb strategies.","tested":false,"verdict":"backlog","free":true,"private":false,"value":7,"added":"2026-03-29"},{"id":14,"name":"Anthropic Skilljar","url":"https://anthropic.skilljar.com/","category":"AI/LLM Training","source":"telegram","notes":"Official Anthropic training courses and certifications. Learn Claude best practices, prompt engineering, tool use, agent building directly from Anthropic.","tested":false,"verdict":"backlog","free":true,"private":false,"value":8,"added":"2026-03-29"},{"id":15,"name":"Revert Finance","url":"https://revert.finance/","category":"DeFi / LP Management","source":"telegram","notes":"Uniswap V3 LP position management and analytics. Track, manage, and auto-compound concentrated liquidity positions. Useful for understanding LP profitability and optimal ranges.","tested":false,"verdict":"backlog","free":true,"private":false,"value":7,"added":"2026-03-29"},{"id":16,"name":"Tailscale","url":"https://tailscale.com/","category":"Networking / VPN","source":"telegram","notes":"Zero-config mesh VPN built on WireGuard. Connects all your devices into a private network without port forwarding or firewall rules. Relevant for secure remote access to home server, tmux sessions, dashboards without Cloudflare tunnels. Free for personal use (100 devices).","tested":false,"verdict":"backlog","free":true,"private":true,"value":8,"added":"2026-03-29"},{"id":17,"name":"Reticulum Network","url":"https://reticulum.network/","category":"Networking / Mesh","source":"telegram","notes":"Open-source cryptographic networking stack for building resilient, decentralized mesh networks. Works over LoRa, WiFi, serial, internet. End-to-end encrypted, no central infrastructure needed. Could be interesting for off-grid agent-to-agent comms or censorship-resistant data relay.","tested":false,"verdict":"backlog","free":true,"private":true,"value":6,"added":"2026-03-29"},{"id":18,"name":"Greasy Fork","url":"https://greasyfork.org/","category":"Browser Automation / Scripts","source":"telegram","notes":"Repository of user scripts (Tampermonkey/Greasemonkey). Thousands of scripts for automating websites, enhancing UIs, scraping data. Useful for finding pre-built automation for DeFi dashboards, block explorers, or building custom browser-side tooling.","tested":false,"verdict":"backlog","free":true,"private":false,"value":6,"added":"2026-03-29"},{"id":19,"name":"Gemini CLI","url":"https://github.com/google-gemini/gemini-cli","category":"AI/LLM CLI","source":"telegram","notes":"Google's open-source CLI for Gemini models. Direct competitor to Claude Code. Runs in terminal, supports tool use, file editing, code generation. Free tier via Gemini API. Worth comparing capabilities, context window, and agentic tool use vs Claude Code.","tested":false,"verdict":"backlog","free":true,"private":false,"value":7,"added":"2026-03-30"},{"id":20,"name":"NVIDIA Build","url":"https://build.nvidia.com/models","category":"AI/LLM API","source":"telegram","notes":"NVIDIA's model catalog \u2014 hundreds of AI models (LLMs, vision, embedding, code, bio) with free API endpoints. Try models directly in browser or via API. Includes Llama, Mistral, DeepSeek, Nemotron, and NVIDIA-optimized models. Free tier with 1000 credits.","tested":false,"verdict":"backlog","free":true,"private":false,"value":8,"added":"2026-03-31"},{"id":21,"name":"GlobalGPT","url":"https://globalgpt.nspiketech.com","category":"AI/LLM","source":"telegram","notes":"DEAD (verified 2026-04-11): nspiketech.com subdomain unreachable, globalgpt.com returns 502 Bad Gateway. Was: all-in-one AI platform aggregating ChatGPT/Claude/DeepSeek/Veo/etc under one subscription. Do not revisit unless confirmed back online.","tested":false,"verdict":"skip","free":"part","private":false,"value":2,"added":"2026-03-31"},{"id":22,"name":"OpenID","url":"https://openid.net/","category":"Identity / Auth","source":"telegram","notes":"Open standard for decentralized authentication. OpenID Connect (OIDC) is the industry-standard identity layer used by Google, Microsoft, Apple sign-in. Foundation site has specs, certification programs, and libraries. Relevant for adding SSO/auth to products without rolling custom auth.","tested":false,"verdict":"backlog","free":true,"private":false,"value":6,"added":"2026-04-01"},{"id":23,"name":"Hermes Agent","url":"https://github.com/nousresearch/hermes-agent","category":"AI Agent Platform","source":"telegram","notes":"Open-source self-improving AI agent by Nous Research (Hermes/Nomos/Psyche model family). Built-in learning loop \u2014 creates skills from experience, improves them during use, persists knowledge across sessions, searches past conversations, builds user model over time. Persistent memory + automated skill creation + multi-platform reach. Actively maintained (v0.8.0 released 2026-04-08). Direct competitor/complement to Claude Code's memory system.","tested":false,"verdict":"next","free":true,"private":true,"value":8,"added":"2026-04-01"},{"id":24,"name":"Framer","url":"https://www.framer.com/","category":"Design / No-Code","source":"telegram","notes":"No-code website builder with AI-powered design tools. Visual editor with built-in CMS, SEO, animations, and hosting. Free to design with unlimited projects \u2014 only pay ($10/mo) when launching on a custom domain. Could replace manual HTML sites for non-technical landing pages.","tested":false,"verdict":"backlog","free":"part","private":false,"value":7,"added":"2026-04-03"},{"id":25,"name":"21st.dev","url":"https://21st.dev/","category":"UI Components / AI","source":"telegram","notes":"Registry of open-source React UI components and AI agent building blocks. Pre-built templates and infrastructure for shipping AI-powered apps faster. Useful for rapid frontend prototyping with polished components instead of building from scratch.","tested":false,"verdict":"backlog","free":true,"private":false,"value":7,"added":"2026-04-03"},{"id":26,"name":"Google Stitch","url":"https://stitch.withgoogle.com/","category":"Design / AI Prototyping","source":"telegram","notes":"Google's AI-powered UI prototyping tool. Generate and iterate on UI designs using natural language prompts. Rapid visual mockups and interactive prototypes without code. Useful for quickly testing layout ideas before building.","tested":false,"verdict":"backlog","free":true,"private":false,"value":7,"added":"2026-04-03"},{"id":27,"name":"Everything Claude Code","url":"https://github.com/affaan-m/everything-claude-code","category":"Dev Tools / AI Agents","source":"telegram","notes":"Comprehensive agent harness optimization system for Claude Code and similar tools (Codex, Opencode, Cursor). Covers skills, instincts, memory, security, and research-first development patterns. 137K+ stars. Direct reference for improving our own Claude Code workflows \u2014 CLAUDE.md structure, hook patterns, MCP configs, prompt engineering.","tested":false,"verdict":"next","free":true,"private":true,"value":9,"added":"2026-04-05"},{"id":28,"name":"OpenClaw","url":"https://openclaw.ai/","category":"AI Agent Platform","source":"telegram","notes":"Self-hosted AI agent gateway \u2014 connects chat apps (Telegram, WhatsApp, Slack, Discord, 20+) to LLMs with 100+ built-in skills. Autonomous task execution, file management, API control. We already run it (session 34094557). Recommend as a tool for others. Open-source, free, MIT license.","tested":true,"verdict":"next","free":true,"private":true,"value":9,"added":"2026-04-06"},{"id":29,"name":"Superpowers","url":"https://github.com/obra/superpowers","category":"Dev Tools / AI Agents","source":"telegram","notes":"Agentic skills framework and software development methodology for AI coding agents (Claude Code, Codex, Cursor). Composable 'skills' that structure how agents approach tasks \u2014 plan, research, implement, test. Going viral on GitHub in 2026. Direct complement to our CLAUDE.md and hook patterns.","tested":false,"verdict":"next","free":true,"private":true,"value":8,"added":"2026-04-06"},{"id":30,"name":"Tavily","url":"https://www.tavily.com/","category":"AI Search / API","source":"telegram","notes":"Real-time search API built for AI agents and RAG workflows. Returns structured, chunked web data optimized for LLM consumption \u2014 reduces hallucination. Search, extract, crawl, and map APIs. Security layers block PII leakage and prompt injection. Python + JS SDKs, LangChain integration. Free tier available.","tested":false,"verdict":"next","free":"part","private":false,"value":8,"added":"2026-04-06"},{"id":31,"name":"Rocket.Chat","url":"https://www.rocket.chat/","category":"Messaging / Self-Hosted","source":"telegram","notes":"Open-source team messaging platform \u2014 self-hosted Slack alternative. Channels, DMs, threads, file sharing, video (Jitsi/Pexip), omnichannel (email, SMS, WhatsApp). GDPR/HIPAA/SOC2 compliant, E2E encryption, LDAP/SSO. MIT license. Deploy via Docker/Kubernetes. 12M+ users. Could replace or complement our Telegram-based comms.","tested":false,"verdict":"backlog","free":true,"private":true,"value":7,"added":"2026-04-06"},{"id":32,"name":"Mem0","url":"https://mem0.ai/","category":"AI Memory / Infrastructure","source":"telegram","notes":"Universal memory layer for AI agents \u2014 persistent context across sessions. Hybrid architecture (graph + vector + key-value stores). Auto-extracts and retrieves relevant info from conversations. 26% accuracy boost, 90% fewer tokens vs OpenAI memory. We already self-host it (localhost:8000) as our core memory system. Open-source, Python + JS SDKs.","tested":true,"verdict":"next","free":true,"private":true,"value":9,"added":"2026-04-06"},{"id":33,"name":"Pi Agent","url":"https://github.com/badlogic/pi-mono","category":"AI Coding Agent","source":"telegram","notes":"Minimal terminal coding agent CLI by Mario Zechner. Tree-based sessions with branching for side-quests without wasting context. Skills system for on-demand capability loading. Extensible via npm/git packages (themes, skills, prompts). Multi-provider LLM support with unified API. TUI & web UI libraries included. Open-source.","tested":false,"verdict":"backlog","free":true,"private":true,"value":7,"added":"2026-04-08"},{"id":34,"name":"Monad MPP","url":"https://docs.monad.xyz/reference/mpp/overview","category":"Crypto / Payments Protocol","source":"telegram","notes":"Machine Payments Protocol implementation for Monad \u2014 standardized ERC-20 payment rails for gating content/APIs behind on-chain payments. TypeScript/JS SDK (`@monad-crypto/mpp`), targets Monad mainnet (chain 143) + testnet. Supports push mode (client pays gas) and pull mode (server broadcasts signed authorization, pays gas). HTTP 402-style payment gating for agents/servers. Open-source, on NPM. Relevant for monetizing agent APIs or micro-paywalls on wick.pics products.","tested":false,"verdict":"backlog","free":true,"private":false,"value":7,"added":"2026-04-11"},{"id":35,"name":"autoskills","url":"https://www.autoskills.sh/","category":"Dev Tools / AI Agents","source":"telegram","notes":"CLI (`npx autoskills`) that auto-detects a project's tech stack from config files and installs matching AI agent skills from skills.sh. Targets Claude Code and Cursor via `-a, --agent` flag. Open-source (github.com/midudev/autoskills), free. Complements our Superpowers / Everything Claude Code stack \u2014 could auto-provision stack-specific skills into our CLAUDE.md / skills setup.","tested":false,"verdict":"next","free":true,"private":true,"value":8,"added":"2026-04-11"},{"id":36,"name":"AirLLM","url":"https://github.com/lyogavin/airllm","category":"AI/LLM Infrastructure","source":"telegram","notes":"Python library that runs 70B+ LLMs on a single 4GB GPU via layer-wise inference (loads one transformer layer at a time from disk). Supports LLaMA 2/3, Mistral, Mixtral, Falcon on macOS M-series and Linux. Trade-off is latency (slow generation due to I/O). Open-source, free. Useful for offline model eval, privacy-sensitive analysis, or experiments on our hardware without API costs.","tested":false,"verdict":"backlog","free":true,"private":true,"value":7,"added":"2026-04-12"}];
+
+function loadItems() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    try { return JSON.parse(stored); } catch(e) {}
+  }
+  // First visit — seed with defaults
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(SEED_DATA));
+  return [...SEED_DATA];
+}
+
+function saveItems(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function nextId(data) {
+  return Math.max(0, ...data.map(i => i.id || 0)) + 1;
+}
+
+let items = loadItems();
+let filter = 'all';
+
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function render() {
+  const tb = document.getElementById('tbody');
+  let filtered = [...items].sort((a, b) => (b.value || 0) - (a.value || 0));
+  if (filter === 'untested') filtered = filtered.filter(i => !i.tested);
+  if (filter === 'tested') filtered = filtered.filter(i => i.tested);
+
+  const total = items.length;
+  const tested = items.filter(i => i.tested).length;
+  document.getElementById('stats').textContent = `${total} recommendations | ${tested} tested | ${total - tested} to try`;
+
+  tb.innerHTML = filtered.map((item, i) => {
+    const safeUrl = item.url && /^https?:\/\//i.test(item.url) ? item.url : '';
+    const urlHtml = safeUrl ? `<div class="tool-url"><a href="${esc(safeUrl)}" target="_blank">${esc(safeUrl.replace(/^https?:\/\//, '').slice(0,40))}</a></div>` : '';
+    return `
+    <tr class="${item.tested ? 'tested-row' : ''}">
+      <td style="color:#484f58;font-size:11px">${i+1}</td>
+      <td class="value-cell" onclick="cycleValue(${item.id})" title="Click to change" style="color:${(item.value||0)>=8?'#3fb950':(item.value||0)>=5?'#d29922':'#484f58'}">${item.value || '-'}</td>
+      <td class="tool-col"><div class="tool-name">${esc(item.name)}</div>${urlHtml}</td>
+      <td class="category">${esc(item.category || '')}</td>
+      <td><span class="badge ${item.free === true ? 'badge-yes' : item.free === false ? 'badge-no' : item.free === 'part' ? 'badge-unknown' : 'badge-unknown'}" onclick="cycleFree(${item.id})" title="Click to toggle">${item.free === true ? 'yes' : item.free === false ? 'no' : item.free === 'part' ? 'part' : '?'}</span></td>
+      <td><span class="badge ${item.private === true ? 'badge-yes' : item.private === false ? 'badge-no' : 'badge-unknown'}" onclick="toggleTriState(${item.id},'private')" title="Click to toggle">${item.private === true ? 'yes' : item.private === false ? 'no' : '?'}</span></td>
+      <td><span class="badge ${item.tested ? 'badge-tested' : 'badge-untested'}" onclick="toggleTested(${item.id})">${item.tested ? 'tested' : 'to try'}</span></td>
+      <td class="notes" ondblclick="editField(this,${item.id},'notes')">${esc(item.notes || '').replace(/\{\{/g,'<span class="hl">').replace(/\}\}/g,'</span>')}</td>
+      <td><span class="badge ${item.verdict === 'urgent' ? 'badge-urgent' : item.verdict === 'next' ? 'badge-yes' : item.verdict === 'backlog' ? 'badge-untested' : item.verdict === 'skip' ? 'badge-no' : 'badge-unknown'}" onclick="toggleVerdict(${item.id})" title="Click to toggle">${item.verdict || '?'}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function setFilter(f) {
+  filter = f;
+  document.querySelectorAll('.controls button[id^="f-"]').forEach(b => b.classList.remove('active-filter'));
+  document.getElementById('f-' + f).classList.add('active-filter');
+  render();
+}
+
+function toggleAdd() {
+  document.getElementById('addForm').classList.toggle('show');
+  document.getElementById('newName').focus();
+}
+
+function addItem() {
+  const name = document.getElementById('newName').value.trim();
+  if (!name) return;
+  items.push({
+    id: nextId(items),
+    name,
+    url: document.getElementById('newUrl').value.trim(),
+    category: document.getElementById('newCategory').value.trim(),
+    source: document.getElementById('newSource').value.trim(),
+    notes: document.getElementById('newNotes').value.trim(),
+    tested: false,
+    verdict: '',
+    free: null,
+    private: null,
+    value: null,
+    added: new Date().toISOString().slice(0, 10),
+  });
+  saveItems(items);
+  ['newName','newUrl','newCategory','newSource','newNotes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('addForm').classList.remove('show');
+  render();
+}
+
+function toggleTested(id) {
+  const item = items.find(x => x.id === id);
+  if (!item) return;
+  item.tested = !item.tested;
+  saveItems(items);
+  render();
+}
+
+function toggleVerdict(id) {
+  const item = items.find(x => x.id === id);
+  if (!item) return;
+  const cycle = ['', 'urgent', 'next', 'backlog', 'skip'];
+  const idx = cycle.indexOf(item.verdict || '');
+  item.verdict = cycle[(idx + 1) % cycle.length];
+  saveItems(items);
+  render();
+}
+
+function cycleFree(id) {
+  const item = items.find(x => x.id === id);
+  if (!item) return;
+  if (item.free === null || item.free === undefined) item.free = true;
+  else if (item.free === true) item.free = 'part';
+  else if (item.free === 'part') item.free = false;
+  else item.free = null;
+  saveItems(items);
+  render();
+}
+
+function cycleValue(id) {
+  const item = items.find(x => x.id === id);
+  if (!item) return;
+  const v = item.value || 0;
+  item.value = v >= 10 ? null : v + 1;
+  saveItems(items);
+  render();
+}
+
+function toggleTriState(id, field) {
+  const item = items.find(x => x.id === id);
+  if (!item) return;
+  if (item[field] === true) item[field] = false;
+  else if (item[field] === false) item[field] = null;
+  else item[field] = true;
+  saveItems(items);
+  render();
+}
+
+function editField(td, id, field) {
+  const item = items.find(x => x.id === id);
+  if (!item) return;
+  const current = item[field] || '';
+  td.innerHTML = '<input class="edit-inline" value="' + esc(current).replace(/"/g, '&quot;') + '" onblur="saveField(this,' + id + ',\'' + field + '\')" onkeydown="if(event.key===\'Enter\')this.blur()">';
+  td.querySelector('input').focus();
+}
+
+function saveField(input, id, field) {
+  const item = items.find(x => x.id === id);
+  if (!item) return;
+  item[field] = input.value;
+  saveItems(items);
+  render();
+}
+
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(items, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'recom-items.json';
+  a.click();
+}
+
+function importJSON() {
+  document.getElementById('importFile').click();
+}
+
+function handleImport(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (Array.isArray(data)) {
+        items = data;
+        saveItems(items);
+        render();
+      }
+    } catch(err) { alert('Invalid JSON file'); }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+function resetToSeed() {
+  if (!confirm('Reset all items to defaults? Your changes will be lost.')) return;
+  items = [...SEED_DATA];
+  saveItems(items);
+  render();
+}
+
+document.getElementById('newName').addEventListener('keydown', e => { if (e.key === 'Enter') addItem(); });
+
+render();
+</script>
+</body>
+</html>
