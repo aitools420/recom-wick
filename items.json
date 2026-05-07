@@ -558,5 +558,19 @@
     "free": true,
     "private": false,
     "value": 4
+  },
+  {
+    "id": 41,
+    "name": "SimpleX Chat",
+    "url": "https://simplex.chat/",
+    "category": "Messaging / Decentralized",
+    "source": "telegram",
+    "notes": "E2E-encrypted messenger with NO user identifiers — no phone, email, or username. Uses one-time invitation links over a decentralized relay network (self-host your own relays too). iOS / Android / Desktop, open-source (AGPL). Strongest privacy posture in messaging: relays can't link sender→recipient. Compare with Signal (phone-tied) and Session (account ID). Worth evaluating as a private comms layer for agents and operators.",
+    "tested": false,
+    "verdict": "backlog",
+    "added": "2026-05-07",
+    "free": true,
+    "private": true,
+    "value": 7
   }
 ]
