@@ -101,15 +101,15 @@
     "url": "https://pollinations.ai/",
     "category": "AI Images/Audio/Text",
     "source": "tab backlog",
-    "notes": "Free, open-source AI media generation API. Text-to-image, text-to-audio, LLM chat. {{No auth needed}}, React hooks available. Could integrate into products. ⟲ Reassessed 2026-06-15: adopt-now · mktg=high · FREE. No-auth, free, uncapped text-to-image (Flux), audio, and LLM API — the single best fit for our marketing arm's crypto/PulseChain meme and content image pipeline; wire it in now.",
+    "notes": "Free, open-source AI media generation API. Text-to-image, text-to-audio, LLM chat. {{No auth needed}}, React hooks available. Could integrate into products. ⟲ Reassessed 2026-06-15: adopt-now · mktg=high · FREE. No-auth, free, uncapped text-to-image (Flux), audio, and LLM API — the single best fit for our marketing arm's crypto/PulseChain meme and content image pipeline; wire it in now. ⚠️ LIVE-TESTED 2026-06-15: NOT free from our box — every request 402s (rate-limited to 1 concurrent/IP; our box IP persistently contended). Now x402-monetized (~$0.001 USDC/img on Base to bypass) OR needs an account (enter.pollinations.ai). Downgraded from adopt-now: free tier unusable for a content pipeline from here.",
     "tested": false,
-    "verdict": "next",
+    "verdict": "backlog",
     "added": "2026-03-28",
     "free": true,
     "private": false,
     "value": 7,
     "reassessed": "2026-06-15",
-    "marketingValue": "high"
+    "marketingValue": "medium"
   },
   {
     "id": 8,
@@ -309,7 +309,7 @@
     "url": "https://build.nvidia.com/models",
     "category": "AI/LLM API",
     "source": "telegram",
-    "notes": "NVIDIA's model catalog — hundreds of AI models (LLMs, vision, embedding, code, bio) with free API endpoints. Try models directly in browser or via API. Includes Llama, Mistral, DeepSeek, Nemotron, and NVIDIA-optimized models. Free tier with 1000 credits. ⟲ Reassessed 2026-06-15: adopt-now · mktg=high · FREE. No-KYC (email only, no card) OpenAI-compatible gateway to 100+ free models incl. image-gen and top open LLMs with 1,000-5,000 never-expiring credits — directly feeds the marketing arm with free image generation and copy endpoints; low-maintenance, fits free/crypto/no-KYC constraints perfectly.",
+    "notes": "NVIDIA's model catalog — hundreds of AI models (LLMs, vision, embedding, code, bio) with free API endpoints. Try models directly in browser or via API. Includes Llama, Mistral, DeepSeek, Nemotron, and NVIDIA-optimized models. Free tier with 1000 credits. ⟲ Reassessed 2026-06-15: adopt-now · mktg=high · FREE. No-KYC (email only, no card) OpenAI-compatible gateway to 100+ free models incl. image-gen and top open LLMs with 1,000-5,000 never-expiring credits — directly feeds the marketing arm with free image generation and copy endpoints; low-maintenance, fits free/crypto/no-KYC constraints perfectly. ⚠️ UNVERIFIED 2026-06-15: the free/no-KYC image-gen claim is NOT yet live-tested (needs the email signup to confirm) — Chef-gated account creation. Treat as the best UNVERIFIED free-image candidate, not confirmed.",
     "tested": false,
     "verdict": "next",
     "free": true,
