@@ -684,5 +684,21 @@
     "free": true,
     "reassessed": "2026-06-15",
     "marketingValue": "none"
+  },
+  {
+    "id": 44,
+    "name": "Serverpod",
+    "url": "https://serverpod.dev",
+    "category": "Dev Tools / Backend",
+    "source": "Chef (TG 2026-06-16)",
+    "notes": "Open-source backend framework that lets you write your server in Dart and get a type-safe, auto-generated client for Flutter/Dart apps — bundles a PostgreSQL ORM, Redis caching, auth, file uploads, real-time WebSocket streaming, and task scheduling, plus a managed Serverpod Cloud (core is free/MIT, cloud hosting is paid). Added 2026-06-16 (Chef): backlog · mktg=none · FREE. Genuinely strong if we ever ship a Flutter/Dart mobile app, but Green Wick's stack is Node.js + Python web apps + static sites with zero Dart, so there's no near-term use — track it as the default backend if a Flutter client ever lands on the roadmap.",
+    "tested": false,
+    "verdict": "backlog",
+    "added": "2026-06-16",
+    "free": true,
+    "private": false,
+    "value": 4,
+    "reassessed": "2026-06-16",
+    "marketingValue": "none"
   }
 ]
