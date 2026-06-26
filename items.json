@@ -796,5 +796,53 @@
     "value": 5,
     "reassessed": "2026-06-26",
     "marketingValue": "none"
+  },
+  {
+    "id": 51,
+    "name": "MCP Apps",
+    "url": "https://modelcontextprotocol.io/extensions/apps/overview",
+    "category": "Dev Tools / AI Agents",
+    "source": "Chef (2026-06-26)",
+    "notes": "The FIRST official MCP extension (Anthropic + OpenAI + the MCP community; proposed Nov 2025, launched Jan 2026): MCP servers can return interactive UI components that render DIRECTLY in the conversation — dashboards, forms, data-viz, multi-step workflows — as sandboxed HTML, with two-way UI/host messaging over JSON-RPC. The app lives inside the chat (no tab-switching). Security: iframe sandboxing with restricted permissions, predeclared/reviewable HTML templates, auditable JSON-RPC messages. Spec + SDK: modelcontextprotocol/ext-apps (SEP-1865). Client support already includes Claude, Claude Desktop, VS Code Copilot, M365 Copilot, Goose, Postman, MCPJam. ⟲ Assessed 2026-06-26: next (adopt-candidate) · mktg=low · FREE / open standard. Relevance: directly on-point — we run many MCP servers and many dashboard-style wick.pics sites. MCP Apps lets our tools render their UI (a crypto dashboard, the fund tracker, even this recom table) INSIDE Claude / Claude Desktop instead of as a separate site — turn a wick.pics page into an in-conversation app where we already work. Pairs with the toolbox idea (id 50): a toolbox bundles the tools, MCP Apps gives them a UI.",
+    "tested": false,
+    "verdict": "next",
+    "added": "2026-06-26",
+    "free": true,
+    "private": false,
+    "value": 7,
+    "reassessed": "2026-06-26",
+    "marketingValue": "low"
+  },
+  {
+    "id": 52,
+    "name": "Git-APE",
+    "url": "https://github.com/Azure/git-ape",
+    "category": "AI Agent Platform",
+    "source": "Chef (2026-06-26) — saw the conference talk",
+    "notes": "Microsoft/Azure's multi-agent PLATFORM-ENGINEERING framework for the agentic age (MIT, by Arnaud Lheureux et al. — the conf talk Chef saw). Built on GitHub Copilot + 10+ specialized agents that plan → validate → deploy a cloud workload with zero manual steps: a guided requirements interview, then auto-generates an ARM template + architecture diagram + cost estimate + security report, CONFIRMS with you before creating anything, deploys, and runs post-deploy validation. You \"describe what you want\" and the agent swarm handles it, with security gates + cost analysis + CI/CD built in. ⟲ Assessed 2026-06-26: backlog (reference/pattern) · mktg=none · MIT but Azure-bound (deploys Azure workloads — not a drop-in for us). Relevance: a concrete instance of the multi-agent orchestration we're researching (the AUS ladder). The transferable PATTERN is the pipeline shape — specialized-agent decompose → generate plan + cost + security report → HUMAN CONFIRM before any irreversible/outward action → execute → validate — which maps cleanly onto our own rules (no-paid-models, confirm outward-facing actions) and onto Omnigent-style agent governance (id 48). Use as a design reference for our orchestrator, not as a tool (it's Azure-specific).",
+    "tested": false,
+    "verdict": "backlog",
+    "added": "2026-06-26",
+    "free": false,
+    "private": false,
+    "value": 5,
+    "reassessed": "2026-06-26",
+    "marketingValue": "none"
+  },
+  {
+    "id": 53,
+    "name": "Amazon Quick (Quick Agent)",
+    "url": "https://aws.amazon.com/quick/",
+    "category": "AI Agent Platform",
+    "source": "Chef (2026-06-26)",
+    "notes": "AWS's fully-managed agentic WORKSPACE (a.k.a. Quick Suite) — an AI assistant for work that connects to your existing tools (Slack, Teams, Outlook, CRMs, databases, local files) and gives one layer to query, automate and act across them. Build agents three ways: custom CHAT agents (tailored, shareable conversational interfaces), Quick AUTOMATE (a planning agent interprets your requirements while specialized agents execute the automation; can pull in custom agents from Bedrock / Bedrock AgentCore / 3rd-party), and desktop SKILLS + SCHEDULED agents (modular skill sets + recurring autonomous tasks). Built on Amazon Bedrock AgentCore and uses MCP as its tool-connection standard. ⟲ Assessed 2026-06-26: backlog (reference/competitor) · mktg=none · AWS-managed (paid, not a drop-in for us). Relevance: the AWS entry in the agentic-workspace race alongside Microsoft's Foundry Toolbox (id 50) and Git-APE (id 52) — competitor/pattern intel. Notable that it standardizes on MCP (like everyone now), and the planning-agent → specialized-executors + scheduled-agents shape echoes our OpenClaw swarm + AFK cron. Not adoptable directly (AWS-bound); track as the cloud-vendor benchmark for a managed agentic workspace.",
+    "tested": false,
+    "verdict": "backlog",
+    "added": "2026-06-26",
+    "free": false,
+    "private": false,
+    "value": 4,
+    "reassessed": "2026-06-26",
+    "marketingValue": "none"
   }
 ]
