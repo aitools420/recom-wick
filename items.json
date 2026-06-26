@@ -748,5 +748,53 @@
     "value": 7,
     "reassessed": "2026-06-26",
     "marketingValue": "none"
+  },
+  {
+    "id": 48,
+    "name": "Omnigent",
+    "url": "https://github.com/omnigent-ai/omnigent",
+    "category": "AI Agent Platform",
+    "source": "Chef (2026-06-26)",
+    "notes": "Open-source (Apache-2.0) META-HARNESS for AI agents, from contributors at Databricks + Neon — a common layer to COMPOSE, GOVERN and COLLABORATE on agents rather than a coding agent itself (it acts as an OS/supervisor over them). Three pillars: (1) Composition — orchestrate Claude Code, Codex, Cursor, Pi and custom agents, and swap harnesses with ~one-line changes, no rewrite; (2) Control — stateful, contextual policies that track agent actions and enforce guardrails (cost budgets, permissions, sandboxing) at the harness layer, NOT via prompts; (3) Collaboration — share live agent sessions by URL and review/steer them together in real time, from web / mobile / macOS app / API. Custom agents are defined in a short YAML (no imperative code) and inherit the whole platform (web UI, persistent sessions, deployment, policies). ⟲ Assessed 2026-06-26: backlog (untested, v0.2.0 — early) · mktg=none · FREE/OSS. Relevance: directly on-point for our multi-agent stack — we run Claude Code + OpenClaw, and Omnigent is exactly a governance/orchestration layer over heterogeneous agents (enforce cost budgets + permissions CENTRALLY — cf. our no-paid-models + budget rules — instead of leaning on prompt discipline). Worth a trial as a supervisor/policy layer over Claude Code; it's early (v0.2) so check maturity before depending on it.",
+    "tested": false,
+    "verdict": "backlog",
+    "added": "2026-06-26",
+    "free": true,
+    "private": false,
+    "value": 7,
+    "reassessed": "2026-06-26",
+    "marketingValue": "none"
+  },
+  {
+    "id": 49,
+    "name": "Neon",
+    "url": "https://neon.com",
+    "category": "Database / Serverless",
+    "source": "Chef (2026-06-26)",
+    "notes": "Serverless Postgres — separates storage from compute for autoscaling + real scale-to-zero, and adds git-style database BRANCHING: each branch is a fully-isolated Postgres instance with its own connection string (copy-on-write, instant, ~free), so you can spin a branch per PR / per dev / per CI run. Acquired by Databricks (~$1B, May 2025) — notably 80%+ of Neon databases were being provisioned by AI AGENTS rather than humans, which is what drew Databricks; post-acquisition storage dropped ~80% (≈$0.35/GB-mo) and compute 15-25%. ⟲ Assessed 2026-06-26: backlog (untested) · mktg=none · FREE TIER. Free tier = 0.5 GB storage, 100 compute-hours/mo, up to 2 CUs, scale-to-zero always on, 1 project — then usage-based (Launch tier $5/mo min). Relevance: a real serverless Postgres for wick.pics apps that have outgrown SQLite/Sheets — free tier + scale-to-zero = $0 for low-traffic sites, and the agent-native provisioning + branching fit our agent-heavy workflow (a branch per experiment). Pairs with Omnigent (id 48, both Databricks/Neon-adjacent) and is the transactional counterpart to chDB (id 46), which is the analytical engine.",
+    "tested": false,
+    "verdict": "backlog",
+    "added": "2026-06-26",
+    "free": "part",
+    "private": false,
+    "value": 6,
+    "reassessed": "2026-06-26",
+    "marketingValue": "none"
+  },
+  {
+    "id": 50,
+    "name": "Foundry Toolbox",
+    "url": "https://devblogs.microsoft.com/foundry/introducing-toolboxes-in-foundry/",
+    "category": "Dev Tools / AI Agents",
+    "source": "Chef (2026-06-26) — the \"toolbox\" idea",
+    "notes": "The \"toolbox\" idea, from Microsoft Foundry: a named, REUSABLE bundle of agent tools you define ONCE, configure auth for centrally, and expose through a single MCP-compatible endpoint — so any agent, on any framework, consumes the same curated toolset without re-wiring. Bundles built-in tools (web search, code interpreter, file search, Azure AI Search) plus MCP, Agent-to-Agent (A2A) and OpenAPI integrations; central auth via OAuth passthrough / Entra managed identity, so agents never hold credentials. Solves the scale-pain of duplicated tool wiring, inconsistent tool behavior, and fragile per-agent configs. ⟲ Assessed 2026-06-26: backlog (concept-of-interest) · mktg=none · Foundry impl is Azure-bound (not a drop-in for us). Relevance: the PATTERN is directly on-point — we wire many MCP servers (DexScreener, Stitch, Telegram, Context7, …) per agent/session. A curated \"toolbox\" = ONE MCP endpoint bundling our vetted tools with central auth, consumed identically by Claude Code + OpenClaw, instead of per-session re-wiring. Worth adopting the concept via an open MCP gateway/aggregator (Foundry itself is Azure-tied). Pairs with Omnigent (id 48): Omnigent governs the agents, a toolbox governs their tools.",
+    "tested": false,
+    "verdict": "backlog",
+    "added": "2026-06-26",
+    "free": false,
+    "private": false,
+    "value": 5,
+    "reassessed": "2026-06-26",
+    "marketingValue": "none"
   }
 ]
