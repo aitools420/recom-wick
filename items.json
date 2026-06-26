@@ -716,5 +716,37 @@
     "value": 8,
     "reassessed": "2026-06-20",
     "marketingValue": "none"
+  },
+  {
+    "id": 46,
+    "name": "chDB",
+    "url": "https://github.com/chdb-io/chdb",
+    "category": "Data / Analytics",
+    "source": "Chef (2026-06-26)",
+    "notes": "In-process SQL OLAP engine powered by ClickHouse (chdb-io/chdb, Apache-2.0) — run full ClickHouse SQL with NO server, embedded straight in a Python script (also Go/Rust/Node/Bun bindings). Query Parquet/CSV/JSON files, Pandas/Polars DataFrames, and Arrow tables in place across 70+ formats and remote sources (S3, URLs). The ClickHouse-engine answer to DuckDB: extremely fast columnar analytics with zero infra. ⟲ Assessed 2026-06-26: backlog (untested) · mktg=none · FREE. Relevance: drop-in local analytics over our crypto/on-chain datasets — token-holder tables, trade logs, mempool dumps, backtest exports — query big Parquet/CSV at ClickHouse speed from inside the Python pipelines without standing up a database. A natural fit where SQLite/pandas hit scale limits; worth a trial against DuckDB on a real on-chain dataset before committing.",
+    "tested": false,
+    "verdict": "backlog",
+    "added": "2026-06-26",
+    "free": true,
+    "private": false,
+    "value": 6,
+    "reassessed": "2026-06-26",
+    "marketingValue": "none"
+  },
+  {
+    "id": 47,
+    "name": "ClickMem",
+    "url": "https://github.com/auxten/clickmem",
+    "category": "Memory / AI Agents",
+    "source": "Chef (2026-06-26)",
+    "notes": "Agent memory built on chDB (embedded ClickHouse) by auxten — the same author as chDB (id 46 above). Gives agents persistent, searchable, LOCAL memory: auto-recalls relevant memories at the start of a conversation and captures the important bits at the end. Fully local with NO cloud API keys — local vector embeddings (Qwen3-Embedding-0.6B) and a small local Qwen LLM for extraction / smart-upsert / maintenance; MLX on Apple Silicon, HuggingFace Transformers elsewhere. Tiered memory (episodic + semantic, with different decay over time). Runs as one local-network server that keeps the embedding + LLM models resident, so recall is ~0.5s instead of ~11s per cold CLI call, and a single server is shared across all your tools. ⟲ Assessed 2026-06-26: backlog (untested) · mktg=none · FREE. Relevance: a self-hosted, zero-API-key alternative/complement to our Mem0 stack — same job (vector recall of agent memories) but fully local and built on the chDB engine we're also evaluating. Worth a direct head-to-head vs Mem0 for board/agent memory, given the no-cloud-keys posture + sub-second resident-server recall.",
+    "tested": false,
+    "verdict": "backlog",
+    "added": "2026-06-26",
+    "free": true,
+    "private": false,
+    "value": 7,
+    "reassessed": "2026-06-26",
+    "marketingValue": "none"
   }
 ]
