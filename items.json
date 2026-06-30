@@ -844,5 +844,21 @@
     "value": 4,
     "reassessed": "2026-06-26",
     "marketingValue": "none"
+  },
+  {
+    "id": 54,
+    "name": "Framework Desktop",
+    "url": "https://frame.work/au/en/desktop",
+    "category": "Hardware / Local AI",
+    "source": "Chef (2026-06-30)",
+    "notes": "Framework's first DESKTOP — a 4.5L (96.8×205.5×226.1mm) mini-ITX small-form-factor PC from the repairable-hardware company, built around AMD's Ryzen AI Max APU (Strix Halo): Max 385 (8c/16t) or Max+ 395 (16c/32t Zen 5), with up to 128GB of LPDDR5x-8000 UNIFIED memory and a Radeon 8050S/8060S iGPU that can address up to 96GB of that pool as VRAM. Framework's modular ethos carries over: pick-your-ports Expansion-Card system (USB-C/A, SD/microSD, Ethernet, audio), a customizable 21-tile front panel, translucent/black side panels, Wi-Fi 7 + 5Gbit Ethernet, and standard-PC-parts compatibility (FlexATX PSU, 120mm fan). Framework markets it explicitly for local AI: \"Run legit, state-of-the-art AI models like Llama 70B right on your desk.\" Paid hardware, config-dependent (the 128GB Max+ 395 build was ≈US$1,999 at launch; AUD not shown on the /au page — roughly an A$3k-class outlay). ⟲ Assessed 2026-06-30: backlog · mktg=none · paid. Relevance: the cleanest hardware answer to our single biggest operational fragility — total reliance on free OpenRouter quotas (the no-paid-models doctrine). 96GB of addressable unified VRAM in a 4.5L box means running 70B-class (and quantized larger-MoE) models locally with zero per-token cost and no overnight quota collapse, turning \"free models only\" from a hard constraint into owned, always-on capability — and it doubles as the local inference node for the OpenClaw swarm / red-team daemons that currently burn OAuth budget. Not adopt-now: a multi-thousand-dollar AUD capital purchase, and we hold to 'no infra spend until capital justifies', so flag it as the designated escape hatch to local inference and revisit once crypto/product revenue covers it.",
+    "tested": false,
+    "verdict": "backlog",
+    "added": "2026-06-30",
+    "free": false,
+    "private": false,
+    "value": 6,
+    "reassessed": "2026-06-30",
+    "marketingValue": "none"
   }
 ]
