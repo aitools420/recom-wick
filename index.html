@@ -15,6 +15,10 @@
   .controls button:hover { background: #30363d; }
   .controls button.active-filter { background: #9e6a03; border-color: #9e6a03; color: #fff; }
   table { width: 100%; border-collapse: collapse; }
+  /* Nine columns need ~1197px; on a phone that used to push the whole body sideways.
+     The table scrolls inside its own box now instead of taking the page with it. */
+  .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tbl-wrap > table { min-width: 900px; }
   th { text-align: left; padding: 8px 10px; border-bottom: 2px solid #21262d; color: #f0883e; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
   td { padding: 8px 10px; border-bottom: 1px solid #161b22; vertical-align: top; }
   tr:hover td { background: #161b22; }
@@ -79,6 +83,7 @@
   <button class="submit" onclick="addItem()">Add</button>
 </div>
 
+<div class="tbl-wrap">
 <table>
   <thead>
     <tr>
@@ -95,6 +100,7 @@
   </thead>
   <tbody id="tbody"></tbody>
 </table>
+</div>
 
 <div class="export-bar">
   <button onclick="exportJSON()">Export JSON</button>
